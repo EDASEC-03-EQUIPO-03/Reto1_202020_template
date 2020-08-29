@@ -244,11 +244,73 @@ def conocer_un_actor(lista,lista2,nombre_actor):
     #def conocer_un_actor()                  
 
 def conocer_genero(lista,genero):
+
     if lista['size']==0:
         print("La lista esta vacía")  
         return 0
     else:
+        Generos=lt.newList("ARRAY_LIST")
+        suma=0
+        iterador= it.newIterator(lista)
         
+        while it.hasNext(iterador):
+            element=it.next(iterador)
+            genero_lista=element["genres"]
+            if genero.lower() in genero_lista.lower():
+                lt.addLast(Generos,element)
+                suma+=float(element["vote_average"])
+                
+    
+    promedio=suma/lt.size(Generos)
+    return Generos,lt.size(Generos),promedio
+
+def ranking_genero(lista,genero,tipo_votacion,orden,num_peliculas):
+    
+    if lista['size']==0:
+        print("La lista esta vacía")  
+        return 0
+    else:
+        lista_final=lt.newList("ARRAY_LIST")
+        peliculas,tamaño,promedio=conocer_genero(lista,genero)
+        iterador=it.newIterator(peliculas)
+        if tipo_votacion=="vote_count" and orden.lower() == "peores" :
+            sort.selectionSort(peliculas,less)
+            lista_final=lt.subList(peliculas,1,int(num_peliculas))
+            iterador= it.newIterator(lista_final)
+            counter=0
+            while it.hasNext(iterador):
+                element=it.next(iterador)
+                counter+=float(element["vote_count"])
+            
+        elif tipo_votacion=="vote_count" and orden.lower() == "mejores" :
+            sort.selectionSort(peliculas,greater1)
+            lista_final=lt.subList(peliculas,1,int(num_peliculas))
+            iterador= it.newIterator(lista_final)
+            counter=0
+            while it.hasNext(iterador):
+                element=it.next(iterador)
+                counter+=float(element["vote_count"])
+
+        elif tipo_votacion=="vote_average" and orden.lower() == "peores":
+            sort.selectionSort(peliculas,less2)
+            lista_final=lt.subList(peliculas,1,int(num_peliculas))
+            iterador= it.newIterator(lista_final)
+            counter=0
+            while it.hasNext(iterador):
+                element=it.next(iterador)
+                counter+=float(element["vote_average"])
+        
+        elif tipo_votacion=="vote_average" and orden.lower() == "mejores":
+            sort.selectionSort(peliculas,greater2)
+            lista_final=lt.subList(peliculas,1,int(num_peliculas))
+            iterador= it.newIterator(lista_final)
+            counter=0
+            while it.hasNext(iterador):
+                element=it.next(iterador)
+                counter+=float(element["vote_count"])
+        
+    promedio=counter/lt.size(lista_final)
+    return lista_final,promedio 
 
 
 
@@ -304,12 +366,28 @@ def main():
                 print("El promedio de votacion de sus peliculas es:",promedio,"y el director con mayores colaboraciones es:",director["nombre"])
                 print(actor["Directores"])
 
-            elif int(inputs[0])==3: #opcion 5
-                pass
+            elif int(inputs[0])==5: #opcion 5
+                Genero=input("Ingrese el genero de interes:\n")
+                Generos,tamaño,promedio=conocer_genero(lst1,Genero)
+                iterador=it.newIterator(Generos)
+                while it.hasNext(iterador):
+                    elemento=it.next(iterador)
+                    print(elemento,"\n","-------------------"*7)
+                print("Se tienen un numero de",tamaño,"peliculas, de acuerdo al genero",Genero)
+                print("Y su promedio de votacion (vote average) es:",promedio)
 
-            elif int(inputs[0])==4: #opcion 6
-                pass
-
+            elif int(inputs[0])==6: #opcion 6
+                genero=input("Ingrese el genero de interes:\n")
+                tipo_votacion=input("Ingrese el tipo de votacion al que quiere acceder (vote_count/vote_average):\n")
+                orden=input("Ingrese si quiere ver las mejores o peores peliculas (mejores/peores):\n")
+                numero_peliculas=input("ingrese el numero de peliculas que desea ver:\n")
+                peliculas,promedio=ranking_genero(lst1,genero,tipo_votacion,orden,numero_peliculas)
+                print("Estas son las",numero_peliculas,orden,"peliculas de el genero",genero,"de acuerdo a",tipo_votacion,"\n")
+                iterador=it.newIterator(peliculas)
+                while it.hasNext(iterador):
+                    elemento=it.next(iterador)
+                    print(elemento,"\n","-------------------"*7)
+                print("Y su promedio de votacion es:",promedio)
 
             elif int(inputs[0])==0: #opcion 0, salir
                 sys.exit(0)
