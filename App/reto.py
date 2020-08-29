@@ -32,7 +32,6 @@ import csv
 
 from ADT import list as lt
 from DataStructures import listiterator as it
-from DataStructures import liststructure as lt
 from Sorting import selectionsort as sort 
 from time import process_time 
 
