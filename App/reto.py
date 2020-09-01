@@ -32,7 +32,7 @@ import csv
 
 from ADT import list as lt
 from DataStructures import listiterator as it
-from Sorting import selectionsort as sort 
+from Sorting import insertionsort as sort 
 from time import process_time 
 
 def cmp1(element1,element2):
@@ -62,6 +62,7 @@ def greater_director(element1, element2):
     if float(element1['conteo']) > float(element2['conteo']):
         return True
     return False
+
 def printMenu():
     """
     Imprime el menu de opciones
@@ -82,8 +83,6 @@ def compareRecordIds (recordA, recordB):
         return 1
     return -1
 
-
-
 def loadCSVFile (file, cmpfunction):
     lst=lt.newList("ARRAY_LIST", cmpfunction)
     dialect = csv.excel()
@@ -96,7 +95,6 @@ def loadCSVFile (file, cmpfunction):
     except:
         print("Hubo un error con la carga del archivo")
     return lst
-
 
 def loadMovies ():
     lst = loadCSVFile("theMoviesdb/SmallMoviesDetailsCleaned.csv",compareRecordIds)
@@ -114,7 +112,7 @@ def Ranking_de_peliculas(lista,tipo_votacion,orden,num_peliculas):
         
         lista_final=lt.newList("ARRAY_LIST")
         if tipo_votacion=="vote_count" and orden.lower() == "peores" :
-            sort.selectionSort(lista,less)
+            sort.insertionSort(lista,less)
             iterador= it.newIterator(lista)
             counter=1
             while it.hasNext(iterador) and counter<=int(num_peliculas):
@@ -124,7 +122,7 @@ def Ranking_de_peliculas(lista,tipo_votacion,orden,num_peliculas):
                 counter+=1
             
         elif tipo_votacion=="vote_count" and orden.lower() == "mejores" :
-            sort.selectionSort(lista,greater1)
+            sort.insertionSort(lista,greater1)
             iterador= it.newIterator(lista)
             counter=1
             while it.hasNext(iterador) and counter<=int(num_peliculas):
@@ -133,7 +131,7 @@ def Ranking_de_peliculas(lista,tipo_votacion,orden,num_peliculas):
                 counter+=1
 
         elif tipo_votacion=="vote_average" and orden.lower() == "peores":
-            sort.selectionSort(lista,less2)
+            sort.insertionSort(lista,less2)
             iterador= it.newIterator(lista)
             counter=1
             while it.hasNext(iterador) and counter<=int(num_peliculas):
@@ -142,7 +140,7 @@ def Ranking_de_peliculas(lista,tipo_votacion,orden,num_peliculas):
                 counter+=1
         
         elif tipo_votacion=="vote_average" and orden.lower() == "mejores":
-            sort.selectionSort(lista,greater2)
+            sort.insertionSort(lista,greater2)
             iterador= it.newIterator(lista)
             counter=1
             while it.hasNext(iterador) and counter<=int(num_peliculas):
@@ -170,7 +168,7 @@ def conocer_a_director(lista,lista2,nombre_director):
             if element["director_name"].lower()==nombre_director.lower():
                 id1=element["id"]
                 iterador2=it.newIterator(lista2)
-                while it.hasNext(iterador2):
+                while it.hasNext(iterador2) :
                     element2=it.next(iterador2)
                     id2=element2["id"]
                     if id1==id2:
@@ -230,7 +228,7 @@ def conocer_un_actor(lista,lista2,nombre_actor):
                                 elemento3["conteo"]+=1
     
                     
-        sort.selectionSort(Directores,greater_director)
+        sort.insertionSort(Directores,greater_director)
         mas=lt.getElement(Directores,1)
         autor["Peliculas"]=peliculas
         autor["Directores"]=Directores
@@ -273,7 +271,7 @@ def ranking_genero(lista,genero,tipo_votacion,orden,num_peliculas):
         peliculas,tamaño,promedio=conocer_genero(lista,genero)
         iterador=it.newIterator(peliculas)
         if tipo_votacion=="vote_count" and orden.lower() == "peores" :
-            sort.selectionSort(peliculas,less)
+            sort.insertionSort(peliculas,less)
             lista_final=lt.subList(peliculas,1,int(num_peliculas))
             iterador= it.newIterator(lista_final)
             counter=0
@@ -282,8 +280,8 @@ def ranking_genero(lista,genero,tipo_votacion,orden,num_peliculas):
                 counter+=float(element["vote_count"])
             
         elif tipo_votacion=="vote_count" and orden.lower() == "mejores" :
-            sort.selectionSort(peliculas,greater1)
-            lista_final=lt.subList(peliculas,1,int(num_peliculas))
+            sort.insertionSort(peliculas,greater1)
+            lista_final=lt.PsubList(peliculas,1,int(num_peliculas))
             iterador= it.newIterator(lista_final)
             counter=0
             while it.hasNext(iterador):
@@ -291,7 +289,7 @@ def ranking_genero(lista,genero,tipo_votacion,orden,num_peliculas):
                 counter+=float(element["vote_count"])
 
         elif tipo_votacion=="vote_average" and orden.lower() == "peores":
-            sort.selectionSort(peliculas,less2)
+            sort.insertionSort(peliculas,less2)
             lista_final=lt.subList(peliculas,1,int(num_peliculas))
             iterador= it.newIterator(lista_final)
             counter=0
@@ -300,7 +298,7 @@ def ranking_genero(lista,genero,tipo_votacion,orden,num_peliculas):
                 counter+=float(element["vote_average"])
         
         elif tipo_votacion=="vote_average" and orden.lower() == "mejores":
-            sort.selectionSort(peliculas,greater2)
+            sort.insertionSort(peliculas,greater2)
             lista_final=lt.subList(peliculas,1,int(num_peliculas))
             iterador= it.newIterator(lista_final)
             counter=0
@@ -310,8 +308,6 @@ def ranking_genero(lista,genero,tipo_votacion,orden,num_peliculas):
         
     promedio=counter/lt.size(lista_final)
     return lista_final,promedio 
-
-
 
 def main():
     """
