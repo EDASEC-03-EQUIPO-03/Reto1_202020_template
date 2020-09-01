@@ -35,6 +35,7 @@ from DataStructures import listiterator as it
 from Sorting import insertionsort as sort 
 from time import process_time 
 
+
 def cmp1(element1,element2):
     if element1 == element2["nombre"]:
         return True
@@ -315,7 +316,7 @@ def main():
 
     Instancia una lista vacia en la cual se guardarán los datos cargados desde el archivo
     Args: None
-    Return: None 
+    
     """
 
 
